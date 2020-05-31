@@ -80,6 +80,39 @@
 
 template <typename T>
 void LinkedList<T>::insertOrdered(const T& newData) {
+  Node* cur = head_;
+  Node *newNode = new Node(newData);
+
+  if(empty()) {
+    pushFront(newData);
+  } else if (cur->next == NULL) {
+    if (cur->data < newData) {
+      pushBack(newData);
+      // return;
+    } else {
+      pushFront(newData);
+      // return;
+    }
+  } else if (head_->data >= newData) {
+    pushFront(newData);
+    // return;
+  } else if (tail_->data <= newData) {
+    pushBack(newData);
+    // return;
+  } else {
+    while (cur->next != NULL) {
+      if (cur->data <= newData && cur->next->data > newData)
+      {
+        cur->next->prev = newNode;
+        newNode->next = cur->next;
+        newNode->prev = cur;
+        cur->next = newNode;
+        size_++;
+        break;
+      }
+      cur = cur->next;
+    }
+  }
 
   // -----------------------------------------------------------
   // TODO: Your code here!
