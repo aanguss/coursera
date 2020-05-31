@@ -256,6 +256,30 @@ LinkedList<T> LinkedList<T>::merge(const LinkedList<T>& other) const {
   // the function.
   LinkedList<T> merged;
 
+  Node* curLeft = left.head_;
+  Node* curRight = right.head_;
+
+  while (curLeft && curRight)
+  {
+    if (curLeft->data <= curRight->data) {
+      merged.insertOrdered(curLeft->data);
+      curLeft = curLeft->next;
+    } else {
+      merged.insertOrdered(curRight->data);
+      curRight = curRight->next;
+    }
+  }
+
+  while (curLeft) {
+    merged.insertOrdered(curLeft->data);
+    curLeft = curLeft->next;
+  }
+
+  while (curRight) {
+    merged.insertOrdered(curRight->data);
+    curRight = curRight->next;
+  }
+
   // -----------------------------------------------------------
   // TODO: Your code here!
   // -----------------------------------------------------------
