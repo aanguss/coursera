@@ -68,21 +68,46 @@ public:
   }
 };
 */
-// using namespace std;
+// #include <cstdio>
+// #include <cstdlib>
 #include <iostream>
+// #include <string>
 
-struct Node
-{
-  int data;
-  int height;
-  struct Node *left;
-  struct Node *right;
+class Node {
+public:
+  int height; // to be set by computeHeight()
+  Node *left, *right;
+  Node() { height = -1; left = right = nullptr; }
+  ~Node() {
+    delete left;
+    left = nullptr;
+    delete right;
+    right = nullptr;
+  }
 };
 
 
 void computeHeight(Node *n) {
-  if (!n) return;  
-  computeHeight(n);
+  int leftsize = 0;
+  int rightsize = 0;
+
+  if (n->left != nullptr) {
+    computeHeight(n->left);
+    leftsize = n->left->height + 1;
+  } 
+  if (n->right != nullptr) {
+    computeHeight(n->right);
+    rightsize = n->right->height + 1;
+  }
+  if (n->left == nullptr && n->right == nullptr) {
+    n->height = 0;
+  } else {
+    if (leftsize >= rightsize) {
+      n->height = leftsize;
+    } else {
+      n->height = rightsize;
+    }
+  }
 }
 
 // This function prints the tree in a nested linear format.
@@ -108,9 +133,15 @@ int main() {
   Node *n = new Node();
   n->left = new Node();
   n->right = new Node();
+
   n->right->left = new Node();
   n->right->right = new Node();
+
   n->right->right->right = new Node();
+
+  n->right->right->right->left = new Node();
+  
+  n->right->right->right->left->right = new Node();
 
   computeHeight(n);
 
