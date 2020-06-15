@@ -96,7 +96,14 @@ static void treeFactory(GenericTree<int>& tree) {
   // Build the contents of tree so that it matches the diagram above
   // when you print it out. The main() function runs that test for you.
 
-  // ...
+  tree.clear();
+  tree.createRoot(4);
+  auto node4 = tree.getRootPtr();
+  auto node8 = node4->addChild(8);
+  node4->addChild(15);
+  auto node16 = node8->addChild(16);
+  node8->addChild(23);
+  node16->addChild(42);
 
 }
 
@@ -306,7 +313,7 @@ std::vector<T> traverseLevels(GenericTree<T>& tree) {
   using TreeNode = typename GenericTree<T>::TreeNode;
 
   // Now you can refer to a pointer to a TreeNode in this function like this.
-  // TreeNode* someTreeNodePointer = nullptr;
+  TreeNode* someTreeNodePointer = nullptr;
 
   // This is the results vector you need to fill.
   std::vector<T> results;
@@ -324,7 +331,27 @@ std::vector<T> traverseLevels(GenericTree<T>& tree) {
   // Remember that you can add a copy of an item to the back of a std::vector
   // with the .push_back() member function.
 
-  // ...
+    std::queue<TreeNode*> nodesToExplore;
+    nodesToExplore.push(rootNodePtr);     // Begin by pushing our root pointer onto the queue
+    
+    while (!nodesToExplore.empty()) {     // Loop while there are still nodes to explore
+      int n = nodesToExplore.size();
+
+      while (n > 0) {
+          
+        TreeNode* frontNode = nodesToExplore.front();
+        nodesToExplore.pop();
+        results.push_back(frontNode->data);
+        for (auto childPtr : frontNode->childrenPtrs) {     // Now loop through the currently recorded children pointers...
+          if (childPtr) {
+            // Also put this child pointer onto the end of the exploration queue.
+            nodesToExplore.push(childPtr);
+          }
+          n--;
+        }
+        n--;
+      }
+    }
 
   return results;
 }
