@@ -91,9 +91,133 @@ public:
 };
 
 void downHeap(Node *n) {
+    if(!n) return;
 
-  // Implement downHeap() here.
+    Node *tempParent = NULL;
+    Node *tempChild = NULL;
+    int tempValue;
 
+    // if (n->left && n->right) {
+    //     if ((n->value > n->left->value) && (n->value > n->right->value)) {
+    //         if (n->left->value < n->right->value) {
+    //             tempParent = n;
+    //             tempChild = n->left;
+
+    //             n->left = n;
+    //             n->left = tempChild;
+    //             n->right = tempParent->right;
+                
+    //             // n->value = tempChild->value;
+    //             // n->right = tempParent->right;
+    //             // n->left = tempParent;
+    //             // tempParent->left = tempChild->left;
+    //             // n->left->value = tempParent->value;
+    //             if (tempParent->left->left) {
+    //                 n->left->left = tempChild->left;
+    //             }
+    //             if (tempParent->left->right) {
+    //                 n->left->right = tempChild->right;
+    //             }
+    //             downHeap(n->left);
+    //         } else {
+    //             tempParent = n;
+    //             tempChild = n->right;
+
+    //             n->value = tempChild->value;
+    //             n->right = tempParent->right;
+    //             tempParent->right = tempChild->right;
+    //             n->right->value = tempParent->value;
+    //             if (tempParent->right->left) {
+    //                 n->right->left = tempChild->left;
+    //             }
+    //             if (tempParent->right->right) {
+    //                 n->right->right = tempChild->right;
+    //             }
+    //             downHeap(n->right);
+    //         }
+    //     }
+
+    //     else if (n->value > n->left->value) {
+    //         tempParent = n;
+    //         tempChild = n->left;
+
+    //         n->value = tempChild->value;
+    //         n->right = tempParent->right;
+    //         tempParent->left = tempChild->left;
+    //         n->left = tempParent;
+    //         if (tempParent->left->left) {
+    //             n->left->left = tempChild->left;
+    //         }
+    //         if (tempParent->left->right) {
+    //             n->left->right = tempChild->right;
+    //         }
+    //         downHeap(n->left);
+    //     }
+
+    //     else if (n->value > n->right->value) {
+    //         tempParent = n;
+    //         tempChild = n->right;
+
+    //         n->value = tempChild->value;
+    //         n->right = tempParent->right;
+    //         tempParent->right = tempChild->right;
+    //         n->right = tempParent;
+    //         if (tempParent->right->left) {
+    //             n->right->left = tempChild->left;
+    //         }
+    //         if (tempParent->right->right) {
+    //             n->right->right = tempChild->right;
+    //         }
+    //         downHeap(n->right);
+    //     }
+    // }
+
+
+    if (n->left && n->right) {
+        if ((n->value > n->left->value) && (n->value > n->right->value)) {
+            if (n->left->value < n->right->value) {
+                tempValue = n->left->value;
+                n->left->value = n->value;
+                n->value = tempValue;
+                downHeap(n->left);
+            } else {
+                tempValue = n->right->value;
+                n->right->value = n->value;
+                n->value = tempValue;
+                downHeap(n->right);
+            }
+        }
+
+        else if (n->value > n->left->value) {
+            tempValue = n->left->value;
+            n->left->value = n->value;
+            n->value = tempValue;
+            downHeap(n->left);
+        }
+
+        else if (n->value > n->right->value) {
+            tempValue = n->right->value;
+            n->right->value = n->value;
+            n->value = tempValue;
+            downHeap(n->right);
+        }
+    }
+    if (n->left) {
+        if (n->value > n->left->value) {
+            tempValue = n->left->value;
+            n->left->value = n->value;
+            n->value = tempValue;
+            downHeap(n->left);
+        }
+    }
+    if (n->right) {
+        if (n->value > n->right->value) {
+            tempValue = n->right->value;
+            n->right->value = n->value;
+            n->value = tempValue;
+            downHeap(n->right);
+        }
+    }
 }
 
 // You can also use this compact printing function for debugging.
@@ -113,10 +237,12 @@ int main() {
   n->right->left = new Node(3);
   n->right->right = new Node(4);
   n->right->right->right = new Node(5);
-
+  
+  std::cout << "Staring Point:" << std::endl;
+  printTree(n);
   downHeap(n);
 
-  std::cout << "Compact printout:" << std::endl;
+  std::cout << std::endl << "Compact printout:" << std::endl;
   printTree(n);
   std::cout << std::endl << "Vertical printout:" << std::endl;
 //   printTreeVertical(n);
