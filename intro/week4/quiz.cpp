@@ -49,17 +49,29 @@ public:
         value1 = v1;
         value2 = v2;
     };
+    int returnValue1(void) {
+        return value1;
+    };
+    int returnValue2(void) {
+        return value2;
+    };
 };
 class sumPair : public Pair {
 public:
     int sum;
+    Pair * p;
     sumPair(void) {
-        Pair * p = new Pair();
+        Pair();
     };
     sumPair(int a, int b) {
-        Pair * p = new Pair(a,b);
+        Pair(a,b);
         sum = a + b;
     };
+    int getPairSum(void) {
+        int a = p->returnValue1();
+        int b = p->returnValue2();
+        return (a+b);
+    }
 };
 
 /* Below is a main() function
@@ -71,5 +83,6 @@ public:
 int main() {
   sumPair sp(15,16);
   std::cout << "sp(15,16).sum =" << sp.sum << std::endl;
+  std::cout << "value1 + value2 = " << sp.getPairSum() << std::endl;
   return 0;
 }
