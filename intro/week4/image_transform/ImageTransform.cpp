@@ -67,9 +67,39 @@ PNG grayscale(PNG image) {
  * @return The image with a spotlight.
  */
 PNG createSpotlight(PNG image, int centerX, int centerY) {
+  double distance_to_center;
+  double reducedLuminance;
+  double distanceX, distanceY;
+
+  for (unsigned x = 0; x < image.width(); x++) {
+    for (unsigned y = 0; y < image.height(); y++) {
+      HSLAPixel & pixel = image.getPixel(x, y);
+
+      distanceX = centerX - x;
+      if (x == 320 && y == 50) { std::cout << "(320,50) distanceX = " << distanceX << std::endl; }
+      distanceX = abs(distanceX);
+      if (x == 320 && y == 50) { std::cout << "(320,50) abs.distanceX = " << distanceX << std::endl; }
+      distanceX = distanceX * distanceX;
+      if (x == 320 && y == 50) { std::cout << "(320,50) centerX = " << centerX << std::endl; }
+      if (x == 320 && y == 50) { std::cout << "(320,50) distanceX = " << distanceX << std::endl; }
+      distanceY = centerY - y;
+      if (x == 320 && y == 50) { std::cout << "(320,50) distanceY = " << distanceY << std::endl; }
+      distanceY = abs(distanceY);
+      if (x == 320 && y == 50) { std::cout << "(320,50) abs.distanceY = " << distanceY << std::endl; }
+      distanceY = distanceY * distanceY;
+      if (x == 320 && y == 50) { std::cout << "(320,50) centerY = " << centerY << std::endl; }
+      if (x == 320 && y == 50) { std::cout << "(320,50) distanceY = " << distanceY << std::endl; }
+      distance_to_center = sqrt(distanceX + distanceY);
+      if (x == 320 && y == 50) { std::cout << "(320,50) distance = " << distance_to_center << std::endl; }
+      reducedLuminance = distance_to_center * 0.5;
+      if (x == 320 && y == 50) { std::cout << "(320,50) preLum = " << reducedLuminance << std::endl; }
+      reducedLuminance = abs(1 - (reducedLuminance / 100));
+      if (x == 320 && y == 50) { std::cout << "(320,50) postLum = " << reducedLuminance << std::endl; }
+      pixel.l = reducedLuminance * pixel.l;
+    }
+  }
 
   return image;
-  
 }
  
 
@@ -84,6 +114,17 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
  * @return The illinify'd image.
 **/
 PNG illinify(PNG image) {
+  for (unsigned x = 0; x < image.width(); x++) {
+    for (unsigned y = 0; y < image.height(); y++) {
+      HSLAPixel & pixel = image.getPixel(x, y);
+
+      if (pixel.h > 293 || pixel.h < 113) {
+        pixel.h = 11; // orange
+      } else {
+        pixel.h = 216; // blue
+      }
+    }
+  }
 
   return image;
 }
