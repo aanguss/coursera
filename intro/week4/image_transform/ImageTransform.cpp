@@ -75,27 +75,60 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
     for (unsigned y = 0; y < image.height(); y++) {
       HSLAPixel & pixel = image.getPixel(x, y);
 
-      distanceX = centerX - x;
-      if (x == 320 && y == 50) { std::cout << "(320,50) distanceX = " << distanceX << std::endl; }
-      distanceX = abs(distanceX);
-      if (x == 320 && y == 50) { std::cout << "(320,50) abs.distanceX = " << distanceX << std::endl; }
+      if (centerX < x) {
+        distanceX = x - centerX;
+      } else {
+        distanceX = centerX - x;
+      }
+      if (x == 100 && y == 15) { std::cout << "(320,50) distanceX = " << distanceX << std::endl; }
       distanceX = distanceX * distanceX;
-      if (x == 320 && y == 50) { std::cout << "(320,50) centerX = " << centerX << std::endl; }
-      if (x == 320 && y == 50) { std::cout << "(320,50) distanceX = " << distanceX << std::endl; }
-      distanceY = centerY - y;
-      if (x == 320 && y == 50) { std::cout << "(320,50) distanceY = " << distanceY << std::endl; }
-      distanceY = abs(distanceY);
-      if (x == 320 && y == 50) { std::cout << "(320,50) abs.distanceY = " << distanceY << std::endl; }
+      if (x == 100 && y == 15) { std::cout << "(320,50) distanceX*distanceX = " << distanceX << std::endl; }
+      if (x == 100 && y == 15) { std::cout << "(320,50) centerX = " << centerX << std::endl; }
+
+      if (centerY < y) {
+        distanceY = y - centerY;
+      } else {
+        distanceY = centerY - y;
+      }
+      if (x == 100 && y == 15) { std::cout << "(320,50) distanceY = " << distanceY << std::endl; }
       distanceY = distanceY * distanceY;
-      if (x == 320 && y == 50) { std::cout << "(320,50) centerY = " << centerY << std::endl; }
-      if (x == 320 && y == 50) { std::cout << "(320,50) distanceY = " << distanceY << std::endl; }
+      if (x == 100 && y == 15) { std::cout << "(320,50) distanceY*distanceY = " << distanceY << std::endl; }
+      if (x == 100 && y == 15) { std::cout << "(320,50) centerY = " << centerY << std::endl; }
+
       distance_to_center = sqrt(distanceX + distanceY);
-      if (x == 320 && y == 50) { std::cout << "(320,50) distance = " << distance_to_center << std::endl; }
+      if (x == 100 && y == 15) { std::cout << "(320,50) distance_to_center = " << distance_to_center << std::endl; }
       reducedLuminance = distance_to_center * 0.5;
-      if (x == 320 && y == 50) { std::cout << "(320,50) preLum = " << reducedLuminance << std::endl; }
-      reducedLuminance = abs(1 - (reducedLuminance / 100));
-      if (x == 320 && y == 50) { std::cout << "(320,50) postLum = " << reducedLuminance << std::endl; }
+
+      if (x == 100 && y == 15) { std::cout << "(320,50) preLum = " << reducedLuminance << std::endl; }
+      reducedLuminance = 1 - (reducedLuminance / 100);
+      if (x == 100 && y == 15) { std::cout << "(320,50) postLum = " << reducedLuminance << std::endl; }
+
+      if (reducedLuminance < 0.20) {
+        reducedLuminance = 0.20;
+      }
       pixel.l = reducedLuminance * pixel.l;
+
+      // distanceX = centerX - x;
+      // if (x == 320 && y == 50) { std::cout << "(320,50) distanceX = " << distanceX << std::endl; }
+      // distanceX = abs(distanceX);
+      // if (x == 320 && y == 50) { std::cout << "(320,50) abs.distanceX = " << distanceX << std::endl; }
+      // distanceX = distanceX * distanceX;
+      // if (x == 320 && y == 50) { std::cout << "(320,50) centerX = " << centerX << std::endl; }
+      // if (x == 320 && y == 50) { std::cout << "(320,50) distanceX = " << distanceX << std::endl; }
+      // distanceY = centerY - y;
+      // if (x == 320 && y == 50) { std::cout << "(320,50) distanceY = " << distanceY << std::endl; }
+      // distanceY = abs(distanceY);
+      // if (x == 320 && y == 50) { std::cout << "(320,50) abs.distanceY = " << distanceY << std::endl; }
+      // distanceY = distanceY * distanceY;
+      // if (x == 320 && y == 50) { std::cout << "(320,50) centerY = " << centerY << std::endl; }
+      // if (x == 320 && y == 50) { std::cout << "(320,50) distanceY = " << distanceY << std::endl; }
+      // distance_to_center = sqrt(distanceX + distanceY);
+      // if (x == 320 && y == 50) { std::cout << "(320,50) distance = " << distance_to_center << std::endl; }
+      // reducedLuminance = distance_to_center * 0.5;
+      // if (x == 320 && y == 50) { std::cout << "(320,50) preLum = " << reducedLuminance << std::endl; }
+      // reducedLuminance = abs(1 - (reducedLuminance / 100));
+      // if (x == 320 && y == 50) { std::cout << "(320,50) postLum = " << reducedLuminance << std::endl; }
+      // pixel.l = reducedLuminance * pixel.l;
     }
   }
 
