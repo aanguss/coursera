@@ -56,6 +56,31 @@ StringIntMap makeWordCounts(const StringVec& words) {
   // =================================================
   // EXERCISE 1 WORKSPACE: YOUR CODE HERE
   // =================================================
+    int length = words.size();
+    int size;
+    
+    for (int i = 0; i < length; i++) {
+        // std::cout << words.at(i) << '\n';
+        // std::unordered_map<std::string, int>::const_iterator index = wordcount_map.find(words.at(i));
+        StringIntMap::iterator index = wordcount_map.find(words.at(i));
+        // auto index = wordcount_map.find(words.at(i));
+        // std::string word = words.at(i);
+        std::pair<std::string,int> values (words.at(i), 1);
+        
+        if (index != wordcount_map.end()) {
+            // FOUND THE STRING - +1 to the current int value
+            // std::cout << "found the value\n";
+            index->second++;
+        }
+        else {
+            // STRING NOT FOUND - set value to 1 as a starting point
+            // std::cout << "didn't find the value\n";
+            wordcount_map.insert(values);
+        }
+    }
+    // for (auto const &pair: wordcount_map) {
+    //     std::cout << "{" << pair.first << ": " << pair.second << "}\n";
+    // }
 
   return wordcount_map;
 }
