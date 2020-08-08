@@ -75,26 +75,27 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
     for (unsigned y = 0; y < image.height(); y++) {
       HSLAPixel & pixel = image.getPixel(x, y);
 
-      distanceX = centerX - x;
-      if (x == 320 && y == 50) { std::cout << "(320,50) distanceX = " << distanceX << std::endl; }
-      distanceX = abs(distanceX);
-      if (x == 320 && y == 50) { std::cout << "(320,50) abs.distanceX = " << distanceX << std::endl; }
+      if ((unsigned)centerX < x) {
+        distanceX = x - centerX;
+      } else {
+        distanceX = centerX - x;
+      }
       distanceX = distanceX * distanceX;
-      if (x == 320 && y == 50) { std::cout << "(320,50) centerX = " << centerX << std::endl; }
-      if (x == 320 && y == 50) { std::cout << "(320,50) distanceX = " << distanceX << std::endl; }
-      distanceY = centerY - y;
-      if (x == 320 && y == 50) { std::cout << "(320,50) distanceY = " << distanceY << std::endl; }
-      distanceY = abs(distanceY);
-      if (x == 320 && y == 50) { std::cout << "(320,50) abs.distanceY = " << distanceY << std::endl; }
+
+      if ((unsigned)centerY < y) {
+        distanceY = y - centerY;
+      } else {
+        distanceY = centerY - y;
+      }
       distanceY = distanceY * distanceY;
-      if (x == 320 && y == 50) { std::cout << "(320,50) centerY = " << centerY << std::endl; }
-      if (x == 320 && y == 50) { std::cout << "(320,50) distanceY = " << distanceY << std::endl; }
+
       distance_to_center = sqrt(distanceX + distanceY);
-      if (x == 320 && y == 50) { std::cout << "(320,50) distance = " << distance_to_center << std::endl; }
       reducedLuminance = distance_to_center * 0.5;
-      if (x == 320 && y == 50) { std::cout << "(320,50) preLum = " << reducedLuminance << std::endl; }
-      reducedLuminance = abs(1 - (reducedLuminance / 100));
-      if (x == 320 && y == 50) { std::cout << "(320,50) postLum = " << reducedLuminance << std::endl; }
+      reducedLuminance = 1 - (reducedLuminance / 100);
+      if (reducedLuminance < 0.20) {
+        reducedLuminance = 0.20;
+      }
+
       pixel.l = reducedLuminance * pixel.l;
     }
   }
@@ -143,6 +144,18 @@ PNG illinify(PNG image) {
 * @return The watermarked image.
 */
 PNG watermark(PNG firstImage, PNG secondImage) {
+  for (unsigned x = 0; x < firstImage.width(); x++) {
+    for (unsigned y = 0; y < firstImage.height(); y++) {
+
+      HSLAPixel & pixel = firstImage.getPixel(x, y);
+      HSLAPixel & pixel2 = secondImage.getPixel(x, y);
+      
+      if (pixel2.l == 1.0) {
+        pixel.l = pixel.l + 0.2;
+      }
+      
+    }
+  }
 
   return firstImage;
 }
