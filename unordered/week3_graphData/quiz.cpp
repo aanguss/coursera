@@ -74,19 +74,34 @@ void DisjointSets::dsunion(int i, int j) {
   bool j_had_cycle = query_cycle(j);
   int root_i = find_leader(i);
   int root_j = find_leader(j);
+
+  printf("PREE: i = %d, j = %d, i_had_cycle = %d, j_had_cycle = %d, root_i = %d, root_j = %d\n", 
+      i, j, i_had_cycle, j_had_cycle, root_i, root_j);
+
   if (root_i != root_j) {
     leader[root_i] = root_j;
     root_i = root_j;
+    printf("root_i != root_j\n");
   }
   else {
     // A cycle is detected when dsunion is performed on an edge
     // where both vertices already report the same set leader.
     // TODO: Your work here! Update has_cycle accordingly.
+    has_cycle[i] = has_cycle[j] = true;
   }
 
   // Also, if either one of the original sets was known to have a cycle
   // already, then the newly joined set still has a cycle.
   // TODO: Your work here!
+  if (i_had_cycle) {
+    has_cycle[i];
+  }
+  if (j_had_cycle) {
+    has_cycle[j];
+  }
+  printf("POST: i = %d, j = %d, i_had_cycle = %d, j_had_cycle = %d, root_i = %d, root_j = %d\n", 
+      i, j, i_had_cycle, j_had_cycle, root_i, root_j);
+  printf("\n");
 }
 
 // TASK 2:
@@ -102,7 +117,33 @@ void DisjointSets::count_comps(int n) {
   //  what information can you get from the leaders now?
 
   // TODO: Your work here!
-
+  // int leaders[n];
+  // int priorLeader = find_leader(0);
+  int leader_list[n];
+  for (int i = 0; i < n; i++) {
+    leader_list[i] = -1;
+  }
+  // int leader_tracker = 0;
+  // leader_list[leader_tracker] = find_leader(leader_tracker);
+  // int first
+  // for (int i = 1; i < n; i++) {
+  //   printf("find_leader = %d\n", find_leader(i));
+  //   if (find_leader(i) != leader_list[leader_tracker]) {
+  //     leader[++leader_tracker] = find_leader(i);
+  //   }
+  // }
+  // for (int i = 0;)
+  for (int i = 0; i < n; i++) {
+    int leaderIs = find_leader(i);
+    leader_list[leaderIs] = 1;
+  }
+  int countLeaders = 0;
+  for (int i = 0; i < n; i++) {
+    if (leader_list[i] != -1) {
+      countLeaders++;
+    }
+  }
+  num_components = countLeaders;
 }
 
 int main() {
