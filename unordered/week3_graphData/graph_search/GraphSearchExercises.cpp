@@ -52,6 +52,41 @@ int GridGraph::countEdges() const {
   // =======================================================================
   // TODO: Your code here!
   // =======================================================================
+  std::unordered_set<IntPairPair> edgeSet;
+  // Loop over key-value pairs
+  for (const auto& kv : adjacencyMap) {
+    // key: point
+    const auto& p1 = kv.first;
+    // value: neighbor point set
+    const auto& p1_neighbors = kv.second;
+
+    // Points that have no adjacencies are isolated points, with no incident edges.
+    if (!p1_neighbors.empty()) {
+      for (const auto& p2 : p1_neighbors) {
+        IntPairPair edge;
+        if (p1 < p2) {
+          edge = std::make_pair(p1,p2);
+        }
+        else {
+          // If the edge key looks "backwards," then flip it for uniformity.
+          // That is, the same undirected edge (A,B) and (B,A) will always be
+          // recorded as (A,B).
+          edge = std::make_pair(p2,p1);
+        }
+        bool unique = true;
+        for (const auto& elem: edgeSet) {
+          if (elem == edge) {
+            unique = false;
+            break;
+          }
+        }
+        if (unique == true) {
+          edgeSet.insert(edge);
+          numEdges++;
+        }
+      }
+    }
+  }
 
   return numEdges;
 }
@@ -92,6 +127,12 @@ void GridGraph::removePoint(const IntPair& p1) {
   // =======================================================================
   // TODO: Your code here!
   // =======================================================================
+  // std::unordered_set <IntPair> neighorPairs;
+  for (const auto& neighborPoints : originalNeighbors) {
+    printf("%d, %d\n", neighborPoints.first, neighborPoints.second);
+    // neighorPairs.insert(std::make_pair(neighborPoints.first, neighborPoints.second));
+    GridGraph::removeEdge(p1, std::make_pair(neighborPoints.first, neighborPoints.second));
+  }
 
   // Finally, for the one point we are removing, erase the point key itself
   // from adjacencyMap directly. (There is no other GridGraph helper function
@@ -101,6 +142,7 @@ void GridGraph::removePoint(const IntPair& p1) {
   // =======================================================================
   // TODO: Your code here!
   // =======================================================================
+  adjacencyMap.erase(p1);
 }
 
 // =========================================================================
